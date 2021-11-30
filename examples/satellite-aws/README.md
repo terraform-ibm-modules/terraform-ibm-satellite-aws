@@ -1,39 +1,8 @@
-# IBM Cloud Satellite location on AWS
+# satellite-aws
 
-Use this terrafrom automation to set up satellite location on IBM cloud with AWS host.
+This example cover end-to-end functionality of IBM cloud satellite by creating satellite location on specified region.
 It will provision satellite location and create 6 EC2 host and assign 3 host to control plane, and provision ROKS satellite cluster and auto assign 3 host to cluster,
 Configure cluster worker pool to an existing ROKS satellite cluster.
-
-This is a collection of modules that make it easier to provision a satellite on IBM Cloud.
-* satellite-location
-* satellite-location-ec2
-* satellite-cluster-ec2
-* satellite-assign-host
-* satellite-cluster
-* satellite-cluster-worker-pool
-
-## Overview
-
-IBM Cloud® Satellite helps you deploy and run applications consistently across all on-premises, edge computing and public cloud environments from any cloud vendor. It standardizes a core set of Kubernetes, data, AI and security services to be centrally managed as a service by IBM Cloud, with full visibility across all environments through a single pane of glass. The result is greater developer productivity and development velocity.
-
-https://cloud.ibm.com/docs/satellite?topic=satellite-getting-started
-
-## Features
-
-- Create satellite location.
-- Create 6 EC2 host with RHEL 7.7.
-- Assign the 3 hosts to the location control plane.
-- *Conditional creation*:
-  * Create a Red Hat OpenShift on IBM Cloud cluster and assign the 3 hosts to the cluster, so that you can run OpenShift workloads in your location.
-  * Configure a worker pool to an existing OpenShift Cluster.
-
-<table cellspacing="10" border="0">
-  <tr>
-    <td>
-      <img src="images/providers/satellite.png" />
-    </td>
-  </tr>
-</table>
 
 ## Compatibility
 
@@ -58,6 +27,7 @@ Be sure you have the correct Terraform version ( 0.13 or later), you can choose 
 Be sure you have the compiled plugins on $HOME/.terraform.d/plugins/
 
 - [terraform-provider-ibm](https://github.com/IBM-Cloud/terraform-provider-ibm)
+
 ## Usage
 
 ```
@@ -85,9 +55,9 @@ provider "aws" {
 }
 
 module "satellite-aws" {
-  source = "git::git@github.com:terraform-ibm-modules/terraform-ibm-satellite-aws.git"
+  source = "github.com/terraform-ibm-modules/terraform-ibm-satellite-aws"
 
-  ibmcloud_api_key           = var.ibmcloud_api_key #pragma: allowlist secret
+  ibmcloud_api_key           = var.ibmcloud_api_key   #pragma: allowlist secret
   aws_region                 = var.aws_region
   aws_access_key             = var.aws_access_key
   aws_secret_key             = var.aws_secret_key
@@ -177,29 +147,3 @@ module "satellite-aws" {
 | cluster_worker_pool_id    | Cluster worker pool id                |
 | worker_pool_worker_count  | worker count deatails                 |
 | worker_pool_zones         | workerpool zones                      |
-
-## Pre-commit Hooks
-
-Run the following command to execute the pre-commit hooks defined in `.pre-commit-config.yaml` file
-
-  `pre-commit run -a`
-
-We can install pre-coomit tool using
-
-  `pip install pre-commit`
-
-## How to input varaible values through a file
-
-To review the plan for the configuration defined (no resources actually provisioned)
-
-`terraform plan -var-file=./input.tfvars`
-
-To execute and start building the configuration defined in the plan (provisions resources)
-
-`terraform apply -var-file=./input.tfvars`
-
-To destroy the VPC and all related resources
-
-`terraform destroy -var-file=./input.tfvars`
-
-All optional parameters by default will be set to null in respective example's varaible.tf file. If user wants to configure any optional paramter he has overwrite the default value.
