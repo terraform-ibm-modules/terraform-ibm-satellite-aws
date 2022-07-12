@@ -14,7 +14,7 @@ data "aws_availability_zones" "available" {
 # Create satellite location
 ###################################################################
 module "satellite-location" {
-  source = "terraform-ibm-modules/satellite/ibm//modules/location"
+  source  = "terraform-ibm-modules/satellite/ibm//modules/location"
   version = "1.1.9"
 
   is_location_exist = var.is_location_exist
@@ -31,7 +31,7 @@ module "satellite-location" {
 # Create AWS VPC
 ###################################################################
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
   version = "~> 3.14.2"
 
   name = "${var.resource_prefix}-vpc"
@@ -223,8 +223,8 @@ module "satellite-cluster-ec2" {
 # Assign host to satellite location control plane
 ###################################################################
 module "satellite-assign-host" {
-  source = "terraform-ibm-modules/satellite/ibm//modules/host"
-  version = "1.19"
+  source         = "terraform-ibm-modules/satellite/ibm//modules/host"
+  version        = "1.19"
   host_count     = var.satellite_host_count
   location       = module.satellite-location.location_id
   host_vms       = module.satellite-location-ec2.private_dns
@@ -239,7 +239,7 @@ module "satellite-assign-host" {
 # Create satellite ROKS cluster
 ###################################################################
 module "satellite-cluster" {
-  source = "terraform-ibm-modules/satellite/ibm//modules/cluster"
+  source  = "terraform-ibm-modules/satellite/ibm//modules/cluster"
   version = "1.19"
 
   create_cluster             = var.create_cluster
@@ -263,7 +263,7 @@ module "satellite-cluster" {
 # Create worker pool on existing ROKS cluster
 ###################################################################
 module "satellite-cluster-worker-pool" {
-  source = "terraform-ibm-modules/satellite/ibm//modules/configure-cluster-worker-pool"
+  source  = "terraform-ibm-modules/satellite/ibm//modules/configure-cluster-worker-pool"
   version = "1.19"
 
   create_cluster_worker_pool = var.create_cluster_worker_pool
