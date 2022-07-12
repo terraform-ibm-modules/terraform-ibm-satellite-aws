@@ -224,7 +224,7 @@ module "satellite-cluster-ec2" {
 ###################################################################
 module "satellite-assign-host" {
   source         = "terraform-ibm-modules/satellite/ibm//modules/host"
-  version        = "1.19"
+  version        = "1.1.9"
   host_count     = var.satellite_host_count
   location       = module.satellite-location.location_id
   host_vms       = module.satellite-location-ec2.private_dns
@@ -240,7 +240,7 @@ module "satellite-assign-host" {
 ###################################################################
 module "satellite-cluster" {
   source  = "terraform-ibm-modules/satellite/ibm//modules/cluster"
-  version = "1.19"
+  version = "1.1.9"
 
   create_cluster             = var.create_cluster
   cluster                    = var.cluster
@@ -264,7 +264,7 @@ module "satellite-cluster" {
 ###################################################################
 module "satellite-cluster-worker-pool" {
   source  = "terraform-ibm-modules/satellite/ibm//modules/configure-cluster-worker-pool"
-  version = "1.19"
+  version = "1.1.9"
 
   create_cluster_worker_pool = var.create_cluster_worker_pool
   worker_pool_name           = var.worker_pool_name
