@@ -15,6 +15,7 @@ data "aws_availability_zones" "available" {
 ###################################################################
 module "satellite-location" {
   source = "terraform-ibm-modules/satellite/ibm//modules/location"
+  version = "1.1.9"
 
   is_location_exist = var.is_location_exist
   location          = var.location
@@ -31,6 +32,7 @@ module "satellite-location" {
 ###################################################################
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
+  version = "~> 3.14.2"
 
   name = "${var.resource_prefix}-vpc"
   cidr = "10.0.0.0/16"
@@ -222,7 +224,7 @@ module "satellite-cluster-ec2" {
 ###################################################################
 module "satellite-assign-host" {
   source = "terraform-ibm-modules/satellite/ibm//modules/host"
-
+  version = "1.19"
   host_count     = var.satellite_host_count
   location       = module.satellite-location.location_id
   host_vms       = module.satellite-location-ec2.private_dns
@@ -237,7 +239,8 @@ module "satellite-assign-host" {
 # Create satellite ROKS cluster
 ###################################################################
 module "satellite-cluster" {
-  source = "git::https://github.com/terraform-ibm-modules/terraform-ibm-satellite.git//modules/cluster"
+  source = "terraform-ibm-modules/satellite/ibm//modules/cluster"
+  version = "1.19"
 
   create_cluster             = var.create_cluster
   cluster                    = var.cluster
@@ -260,7 +263,8 @@ module "satellite-cluster" {
 # Create worker pool on existing ROKS cluster
 ###################################################################
 module "satellite-cluster-worker-pool" {
-  source = "git::https://github.com/terraform-ibm-modules/terraform-ibm-satellite.git////modules/configure-cluster-worker-pool"
+  source = "terraform-ibm-modules/satellite/ibm//modules/configure-cluster-worker-pool"
+  version = "1.19"
 
   create_cluster_worker_pool = var.create_cluster_worker_pool
   worker_pool_name           = var.worker_pool_name
