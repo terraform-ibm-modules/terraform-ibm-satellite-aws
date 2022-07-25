@@ -85,7 +85,8 @@ provider "aws" {
 }
 
 module "satellite-aws" {
-  source = "git::git@github.com:terraform-ibm-modules/terraform-ibm-satellite-aws.git"
+  source  = "terraform-ibm-modules/satellite-aws/ibm"
+  version = "1.0.0"
 
   ibmcloud_api_key           = var.ibmcloud_api_key #pragma: allowlist secret
   aws_region                 = var.aws_region
